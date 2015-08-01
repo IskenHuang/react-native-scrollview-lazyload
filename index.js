@@ -107,6 +107,13 @@ var ScrollViewComponent = React.createClass({
     },
 
     componentWillMount: function(){
+        this.props = this._merge(this.props, {
+                onScroll: this._onScroll,
+                onScrollEndDrag: this._onScrollEndDrag,
+                onMomentumScrollBegin: this._onMomentumScrollBegin,
+                onMomentumScrollEnd: this._onMomentumScrollEnd,
+            });
+
         this.scrollProperties = {
             contentHeight: 0,
             visibleHeight: 0,
@@ -115,7 +122,6 @@ var ScrollViewComponent = React.createClass({
     },
 
     componentDidMount: function(){
-        //TODO: 'ListView' also has this code
         requestAnimationFrame(() => {
             this._measureScrollProperties();
         });
@@ -150,32 +156,18 @@ var ScrollViewComponent = React.createClass({
     },
 
     render: function(){
-        var props = this._merge(this.props, {
-                onScroll: this._onScroll,
-                // onTouchStart: this._onTouchStart,
-                // onTouchEnd: this._onTouchEnd,
-                onScrollEndDrag: this._onScrollEndDrag,
-                onMomentumScrollBegin: this._onMomentumScrollBegin,
-                onMomentumScrollEnd: this._onMomentumScrollEnd,
-            }),
-
-            ScrollClass = this.props.scrollClass || ScrollView,
-            content = null;
-
-        if(ScrollClass === ScrollView){
-            content = [
+        var content = [
                 this.props.renderHeader(),
                 this.props.children,
                 this.props.renderFooter(),
             ];
-        }
 
         return (
-            <ScrollClass
-                {...props}
+            <ScrollView
+                {...this.props}
                 ref={this._ref}>
                 {content}
-            </ScrollClass>
+            </ScrollView>
         );
     },
 
@@ -186,7 +178,7 @@ var ScrollViewComponent = React.createClass({
         scrollProperties.offsetY = e.nativeEvent.contentOffset.y;
 
         // `onEndReached` polyfill for ScrollView
-        if(this.props.onEndReached && this.props.scrollClass !== ListView){
+        if(this.props.onEndReached){
             var onEndReached_Threshold = this.props.onEndReachedThreshold || 1000;
             var nearEnd = scrollProperties.contentHeight - scrollProperties.visibleHeight - scrollProperties.offsetY < onEndReachedThreshold;
             if(nearEnd && scrollProperties.contentHeight !== this._sentEndForContentHeight){
@@ -199,14 +191,6 @@ var ScrollViewComponent = React.createClass({
 
         this.props._onScroll && this.props._onScroll(e);
     },
-
-    // _onTouchStart: function(e){
-    //     this.props._onTouchStart && this.props._onTouchStart(e);
-    // },
-
-    // _onTouchEnd: function(e){
-    //     this.props._onTouchEnd && this.props._onTouchEnd(e);
-    // },
 
     _onScrollEndDrag: function(e){
         this._loadId && clearTimeout(this._loadId);
