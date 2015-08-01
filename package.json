@@ -1,0 +1,25 @@
+{
+  "name": "scrollview-lazyload",
+  "version": "1.0.0",
+  "description": "react-native scrollview with image lazy load",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IskenHuang/react-native-scrollview-lazyload.git"
+  },
+  "keywords": [
+    "react-native",
+    "scrollview",
+    "lazyload",
+    "image"
+  ],
+  "author": "Isken Huang",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/IskenHuang/react-native-scrollview-lazyload/issues"
+  },
+  "homepage": "https://github.com/IskenHuang/react-native-scrollview-lazyload#readme"
+}
