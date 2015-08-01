@@ -52,7 +52,7 @@ var ScrollViewComponent = React.createClass({
                 continue;
             }
 
-            if(child._currentElement.type.displayName === 'Image') {
+            if(child._currentElement.type.displayName === 'Image' || child._currentElement._store.props.lazyloadSrc) {
                 this._checkImageToLoad(renderedComponent);
             }
 
@@ -73,6 +73,7 @@ var ScrollViewComponent = React.createClass({
             lazyloadSrc = elem.props.lazyloadSrc,
             instance = elem._owner._instance;
 
+        // image is loaded
         if(lazyloadSrc && !instance.props.isLoaded){
             var scrollView = this.getScrollResponder();
 
@@ -83,7 +84,7 @@ var ScrollViewComponent = React.createClass({
                 (left, top, width, height) => {
                     var scrollY = this.scrollProperties.offsetY || 0;
 
-                    //check if the Image is visible
+                    //check Image is visible
                     if(top + height > scrollY && top < scrollY + this.scrollProperties.visibleHeight){
                         instance.props.source = {
                             uri: instance.props.lazyloadSrc
