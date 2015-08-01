@@ -101,6 +101,8 @@ var ScrollViewComponent = React.createClass({
         return {
             scrollEventThrottle: 50,
             _onMomentumScrollDelay: 400,
+            renderHeader: function(){ return null; },
+            renderFooter: function(){ return null; },
         };
     },
 
@@ -147,26 +149,25 @@ var ScrollViewComponent = React.createClass({
         return scrollView && scrollView.getScrollResponder ? scrollView.getScrollResponder() : scrollView;
     },
 
-    _renderHeader: function(){
-        var header = this.props._renderHeader ? this.props._renderHeader() : {};
-        return header;
-    },
-
     render: function(){
         var props = this._merge(this.props, {
-            onScroll: this._onScroll,
-            // onTouchStart: this._onTouchStart,
-            // onTouchEnd: this._onTouchEnd,
-            onScrollEndDrag: this._onScrollEndDrag,
-            onMomentumScrollBegin: this._onMomentumScrollBegin,
-            onMomentumScrollEnd: this._onMomentumScrollEnd,
-            renderHeader: this._renderHeader,
-        });
+                onScroll: this._onScroll,
+                // onTouchStart: this._onTouchStart,
+                // onTouchEnd: this._onTouchEnd,
+                onScrollEndDrag: this._onScrollEndDrag,
+                onMomentumScrollBegin: this._onMomentumScrollBegin,
+                onMomentumScrollEnd: this._onMomentumScrollEnd,
+            }),
 
-        var ScrollClass = this.props.scrollClass || ScrollView;
-        var content = null;
+            ScrollClass = this.props.scrollClass || ScrollView,
+            content = null;
+
         if(ScrollClass === ScrollView){
-            content = [this._renderHeader(), this.props.children];
+            content = [
+                this.props.renderHeader(),
+                this.props.children,
+                this.props.renderFooter(),
+            ];
         }
 
         return (
