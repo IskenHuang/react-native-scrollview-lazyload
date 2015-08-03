@@ -3,14 +3,13 @@
 var React = require('react-native');
 
 var {
+    ListView,
     ScrollView,
 } = React;
 
 var RCTUIManager = require('NativeModules').UIManager;
 
 var ScrollViewComponent = React.createClass({
-
-    _ref: 'scrollview',
 
     _toLoadImages: true,
 
@@ -99,6 +98,7 @@ var ScrollViewComponent = React.createClass({
 
     getDefaultProps: function() {
         return {
+            ref: 'lazyloadView',
             scrollEventThrottle: 50,
             _onMomentumScrollDelay: 400,
             renderHeader: function(){ return null; },
@@ -151,23 +151,32 @@ var ScrollViewComponent = React.createClass({
 
     // check is ListView or ScrollView
     getScrollResponder: function(){
-        var scrollView = this.refs[this._ref];
+        var scrollView = this.refs[this.props.ref];
         return scrollView && scrollView.getScrollResponder ? scrollView.getScrollResponder() : scrollView;
     },
 
     render: function(){
-        var content = [
+        var content = null,
+            LazyloadView = null,
+            isScrollView = (!this.props.renderRow && !this.props.dataSource) ? true : false;
+
+        if(isScrollView) {
+            LazyloadView = ScrollView;
+            content = [
                 this.props.renderHeader(),
                 this.props.children,
                 this.props.renderFooter(),
             ];
+        }else {
+            LazyloadView = ListView;
+        }
 
         return (
-            <ScrollView
+            <LazyloadView
                 {...this.props}
-                ref={this._ref}>
+                ref={this.props.ref}>
                 {content}
-            </ScrollView>
+            </LazyloadView>
         );
     },
 

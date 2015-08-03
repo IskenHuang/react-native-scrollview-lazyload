@@ -1,15 +1,77 @@
 # React Native scrollview lazyload
-ScrollView with image lazyload feature.
+ScrollView/ListView with image lazyload feature. Support all ScrollView/ListView feature. Detect ScrollView/ListView by 'renderRow' and 'dataSource' props(ListView should be add this props).
+
 
 # how to use
 `npm install react-native-scrollview-lazyload --save`
 
 ```javascript
-var ScrollView = require('react-native-scrollview-lazyload');
+var React = require('react-native');
+var {
+    AppRegistry,
+    Text,
+    View,
+    Image,
+    ListView,
+} = React;
+
+var LazyloadView = require('react-native-scrollview-lazyload');
 
 ...
 
 render: function() {
+    // ListView
+    var body = [],
+        rowStyle = {
+            flex:1,
+            height: 60,
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexDirection: 'row',
+        },
+        renderElement = function(d){
+            return (
+                <View style={rowStyle} ref={d.ref}>
+                    <Image
+                        lazyloadSrc={d.img}
+                        style={{
+                            width: 60,
+                            height: 60,
+                            position: 'absolute',
+                            left: 0,
+                        }}
+                        />
+                    <Text>Row: {d.index}</Text>
+                </View>
+            );
+        };
+
+
+
+    for(var i = 0 ; i < 500; i++) {
+        body.push({
+            ref: 'row' + i,
+            img: 'https://placeholdit.imgix.net/~text?txtsize=8&txt=60%C3%9760&w=60&h=60',
+            index: i,
+        });
+    }
+
+    return (
+        <LazyloadView
+            contentInset={{top: 0, bottom: 20}}
+            dataSource={this.props.dataSource.cloneWithRows(body)}
+            renderRow={(rowData, sectionID, rowID, highlightRow) => {
+                // console.log('renderRow = ', rowData, rowID);
+                return renderElement(rowData);
+            }}
+            _onScroll={(e) => {
+                console.log('_onScroll = ', e.nativeEvent);
+            }}
+        ></LazyloadView>
+    );
+
+
+    // ScrollView
     var body = [],
         rowStyle = {
             flex:1,
@@ -38,7 +100,7 @@ render: function() {
     }
 
     return (
-        <ScrollView
+        <LazyloadView
             _onScroll={(e) => {
 
             }}>
@@ -50,7 +112,7 @@ render: function() {
                 return (<Text>HEADER</Text>);
             }}
             {body}
-        </ScrollView>
+        </LazyloadView>
     );
 },
 
