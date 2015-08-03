@@ -51,7 +51,8 @@ var ScrollViewComponent = React.createClass({
                 continue;
             }
 
-            if(child._currentElement.type.displayName === 'Image' || child._currentElement._store.props.lazyloadSrc) {
+            // child._currentElement.type.displayName === 'Image'
+            if(child._currentElement._store.props.lazyloadSrc && !child._currentElement._store.props.isLoaded) {
                 this._checkImageToLoad(renderedComponent);
             }
 
@@ -107,13 +108,6 @@ var ScrollViewComponent = React.createClass({
     },
 
     componentWillMount: function(){
-        this.props = this._merge(this.props, {
-                onScroll: this._onScroll,
-                onScrollEndDrag: this._onScrollEndDrag,
-                onMomentumScrollBegin: this._onMomentumScrollBegin,
-                onMomentumScrollEnd: this._onMomentumScrollEnd,
-            });
-
         this.scrollProperties = {
             contentHeight: 0,
             visibleHeight: 0,
@@ -156,6 +150,13 @@ var ScrollViewComponent = React.createClass({
     },
 
     render: function(){
+        this.props = this._merge(this.props, {
+                onScroll: this._onScroll,
+                onScrollEndDrag: this._onScrollEndDrag,
+                onMomentumScrollBegin: this._onMomentumScrollBegin,
+                onMomentumScrollEnd: this._onMomentumScrollEnd,
+            });
+
         var content = null,
             LazyloadView = null,
             isScrollView = (!this.props.renderRow && !this.props.dataSource) ? true : false;
