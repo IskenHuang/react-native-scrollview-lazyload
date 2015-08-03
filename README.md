@@ -5,6 +5,8 @@ ScrollView/ListView with image lazyload feature. Support all ScrollView/ListView
 # how to use
 `npm install react-native-scrollview-lazyload --save`
 
+Convert Image source prop to lazyloadSrc `<Image lazyloadSrc={'LOAD_SOURCE'} />`
+
 ```javascript
 var React = require('react-native');
 var {
