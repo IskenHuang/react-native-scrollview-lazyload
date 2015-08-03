@@ -1,6 +1,6 @@
 {
   "name": "react-native-scrollview-lazyload",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "react-native scrollview with image lazy load",
   "main": "index.js",
   "scripts": {
