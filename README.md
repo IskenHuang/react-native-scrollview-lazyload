@@ -9,8 +9,8 @@ ScrollView with image/components lazyload feature. Support all ScrollView featur
 | autoTriggerIsInScreenTime | number | default: 1500. unit: ms |
 | lazyExtra | number | default: 1000，Setup lasy load area. (doesn't include screen height) |
 
-# In LazyloadView components params
-| 参数名称 | 型态 | 说明 |
+# LazyloadView children components params
+| children props | type | description |
 | --- | --- | --- |
 | lazyloadSrc | string, object | default: none. Image component should be `<Image lazyloadSrc={'URL'}>` or `<Image lazyloadSrc={{uri:'URL'}}>`|
 | lazyRender | boolean | default: false. Using lazy reader feature. When components in screen will trigger `setState({ isRendered: true })` for component. Only trigger once. |
